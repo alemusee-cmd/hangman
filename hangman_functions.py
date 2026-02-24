@@ -1,63 +1,30 @@
-import random
+import secrets
 
-HANGMAN_PICS = [
-    """
-       +---+
-           |
-           |
-           |
-          ===""", """
-       +---+
-       O   |
-           |
-           |
-          ===""", """
-       +---+
-       O   |
-       |   |
-           |
-          ===""", """
-       +---+
-       O   |
-      /|   |
-           |
-          ===""", """
-       +---+
-       O   |
-      /|\\  |
-           |
-          ===""", """
-       +---+
-       O   |
-      /|\\  |
-      /    |
-          ===""", """
-       +---+
-       O   |
-      /|\\  |
-      / \\  |
-          ==="""
-]
+def choose_word(available_list):
+    return secrets.choice(available_list)
 
-def get_random_word(available_words, used_words):
-    index = random.randint(0, len(available_words) - 1)
-    chosen_word = available_words.pop(index)
-    used_words.append(chosen_word)
-    return chosen_word
+def update_inventory(word, available_list, used_list):
+    available_list.remove(word)
+    used_list.append(word)
 
-def create_hidden_word(word):
+def hidden_word(word):
     return ["_"] * len(word)
 
-def check_guess(guess, secret_word, current_board):
-    count = 0
-    for index, letter in enumerate(secret_word):
-        if letter == guess:
-            current_board[index] = guess
-            count += 1
-    return count
+def check_len_letter(letter):
+    return len(letter) == 1
 
-def validate_input(user_input):
-    if len(user_input) == 1 and user_input.isalpha():
+def check_is_alpha(letter):
+    return letter.isalpha()
+
+def validate_input(letter):
+    if check_len_letter(letter) and check_is_alpha(letter):
         return True
-    print("Invalid input. Please enter a single letter (a-z).")
     return False
+
+def count_letter_hits(letter, word):
+    return word.count(letter)
+
+def update_board(letter, word, board):
+    for i, char in enumerate(word):
+        if char == letter:
+            board[i] = letter
