@@ -1,13 +1,14 @@
 import random
+# 1
 def get_random_word(available_words, used_words):
     index = random.randint(0, len(available_words) - 1)
     chosen_word = available_words.pop(index)
     used_words.append(chosen_word)
     return chosen_word
-
+# 2
 def create_hidden_word(word):
     return ["_"] * len(word)
-
+# 3
 def check_guess(guess, secret_word, current_board):
     count = 0
     for index, letter in enumerate(secret_word):
@@ -15,3 +16,10 @@ def check_guess(guess, secret_word, current_board):
             current_board[index] = guess
             count += 1
     return count
+# 4
+def validate_input(user_input):
+    if len(user_input) == 1 and user_input.isalpha():
+        return True
+    else:
+        print("Invalid input. Please enter a single letter (a-z).")
+        return False
