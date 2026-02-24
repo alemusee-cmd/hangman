@@ -7,3 +7,11 @@ def get_random_word(available_words, used_words):
 
 def create_hidden_word(word):
     return ["_"] * len(word)
+
+def check_guess(guess, secret_word, current_board):
+    count = 0
+    for index, letter in enumerate(secret_word):
+        if letter == guess:
+            current_board[index] = guess
+            count += 1
+    return count
