@@ -1,44 +1,35 @@
 from hangman_art import draw_hangman
-from hangman_functions import (
-    choose_word, update_inventory, hidden_word,
-    validate_input, count_letter_hits, update_board
-)
+from hangman_functions import *
 available_words = ['python', 'devops', 'jenkins', 'docker', 'kubernetes']
 used_words = []
-max_attempts = 6
 errors = 0
+max_errors = 6
 
-secret_word = choose_word(available_words)
-update_inventory(secret_word, available_words, used_words)
-game_board = hidden_word(secret_word)
+word = choose_word(available_words)
+remove_from_available(word, available_words)
+add_to_used(word, used_words)
+board = create_board(word)
 
-print("--- Welcome to Hangman ---")
+print("--- Game Started ---")
 
-while errors < max_attempts and "_" in game_board:
+while errors < max_errors and not check_win(board):
     draw_hangman(errors)
-    print(f"\nBoard: {' '.join(game_board)}")
-    print(f"Errors: {errors}/{max_attempts}")
-
-    user_guess = input("Guess a letter: ").lower()
-
-    if not validate_input(user_guess):
-        print("Invalid input! Enter one letter only.")
+    print(f"Board: {' '.join(board)} | Errors: {errors}/{max_errors}")
+    guess = input("Enter a letter: ").lower()
+    if not validate_input(guess):
+        print("Invalid! One letter only.")
         continue
 
-    hits = count_letter_hits(user_guess, secret_word)
-
+    hits = count_hits(guess, word)
     if hits > 0:
-        update_board(user_guess, secret_word, game_board)
-        print(f"Yes! Found {hits} times.")
+        reveal_letters(guess, word, board)
+        print(f"Yes! {hits} hits.")
     else:
         errors += 1
-        print(f"No, '{user_guess}' is not there.")
+        print("No luck!")
 
-# סיום
 draw_hangman(errors)
-if "_" not in game_board:
-    print(f"\nWinner! The word was: {secret_word}")
+if check_win(board):
+    print(f"Winner! Word: {word}")
 else:
-    print(f"\nGame Over! The word was: {secret_word}")
-
-print(f"Session history: {used_words}")
+    print(f"Game Over! Word: {word}")

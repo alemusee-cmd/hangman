@@ -36,3 +36,5 @@ HANGMAN_PICS = [
       / \\  |
           ==="""
 ]
+def draw_hangman(errors):
+    print(HANGMAN_PICS[errors])
