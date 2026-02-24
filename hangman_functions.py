@@ -31,3 +31,30 @@ def reveal_letters(letter, word, board):
 
 def check_win(board):
     return "_" not in board
+
+
+import os
+
+
+def load_users(filename="users.txt"):
+    if not os.path.exists(filename):
+        return []
+    with open(filename, "r") as file:
+        return [line.strip() for line in file.readlines()]
+
+
+def save_user(username, filename="users.txt"):
+    with open(filename, "a") as file:
+        file.write(username + "\n")
+
+
+def handle_user_login():
+    users = load_users()
+    name = input("Enter your name: ").strip()
+
+    if name in users:
+        print(f"Welcome back, {name}!")
+    else:
+        print(f"Welcome, {name}! You have been registered as a new user.")
+        save_user(name)
+    return name

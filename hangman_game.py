@@ -1,5 +1,6 @@
 from hangman_art import draw_hangman
 from hangman_functions import *
+current_user = handle_user_login()
 available_words = ['python', 'devops', 'jenkins', 'docker', 'kubernetes']
 used_words = []
 errors = 0
